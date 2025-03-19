@@ -13,6 +13,7 @@ import Tenants from "./pages/Tenants";
 import Payments from "./pages/Payments";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+// We'll add placeholders for the new routes we need based on the roadmap
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,31 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
+  }
+  
+  return <>{children}</>;
+};
+
+// Role-based route protection
+const RoleRoute = ({ 
+  children, 
+  allowedRoles 
+}: { 
+  children: React.ReactNode, 
+  allowedRoles: string[] 
+}) => {
+  const { isAuthenticated, isLoading, role } = useAuth();
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (role && !allowedRoles.includes(role)) {
+    return <Navigate to="/dashboard" />;
   }
   
   return <>{children}</>;
@@ -46,6 +72,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      
+      {/* House Management Routes */}
       <Route 
         path="/houses" 
         element={
@@ -54,6 +82,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      
+      {/* Tenant Management Routes */}
       <Route 
         path="/tenants" 
         element={
@@ -62,6 +92,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      
+      {/* Payment Routes */}
       <Route 
         path="/payments" 
         element={
@@ -70,6 +102,78 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      
+      {/* Maintenance Routes */}
+      <Route 
+        path="/maintenance" 
+        element={
+          <RoleRoute allowedRoles={['admin', 'landlord', 'tenant', 'caretaker']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* Reminder Routes */}
+      <Route 
+        path="/reminders" 
+        element={
+          <RoleRoute allowedRoles={['admin', 'landlord']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* KPLC Token Routes for Tenants */}
+      <Route 
+        path="/kplc" 
+        element={
+          <RoleRoute allowedRoles={['tenant']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* Receipt Routes */}
+      <Route 
+        path="/receipts" 
+        element={
+          <RoleRoute allowedRoles={['tenant', 'landlord']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* Move In/Out Routes for Caretakers */}
+      <Route 
+        path="/moves" 
+        element={
+          <RoleRoute allowedRoles={['caretaker', 'landlord']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* User Management Routes for Admin */}
+      <Route 
+        path="/users" 
+        element={
+          <RoleRoute allowedRoles={['admin']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* Settings Route */}
+      <Route 
+        path="/settings" 
+        element={
+          <RoleRoute allowedRoles={['admin', 'landlord']}>
+            <NotFound /> {/* Placeholder until we create this page */}
+          </RoleRoute>
+        } 
+      />
+      
+      {/* Profile Route */}
       <Route 
         path="/profile" 
         element={

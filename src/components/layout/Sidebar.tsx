@@ -10,7 +10,9 @@ import {
   Settings, 
   AlertCircle, 
   Bell, 
-  ChevronRight 
+  ChevronRight,
+  Zap, // Added for KPLC token
+  ArrowLeftRight // Added for move in/out
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -19,6 +21,13 @@ import { Badge } from '@/components/ui/badge';
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface NavLinkItem {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  badge?: number;
 }
 
 interface NavItemProps {
@@ -75,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   };
   
   // Define links based on role
-  const getNavLinks = () => {
+  const getNavLinks = (): NavLinkItem[] => {
     const commonLinks = [
       { href: "/dashboard", icon: <Home size={20} />, label: "Dashboard" },
     ];
@@ -102,12 +111,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           ...commonLinks,
           { href: "/payments", icon: <DollarSign size={20} />, label: "Payments" },
           { href: "/maintenance", icon: <AlertCircle size={20} />, label: "Maintenance" },
+          { href: "/kplc", icon: <Zap size={20} />, label: "KPLC Tokens" },
+          { href: "/receipts", icon: <Bell size={20} />, label: "Receipts" },
         ];
       case 'caretaker':
         return [
           ...commonLinks,
           { href: "/houses", icon: <Home size={20} />, label: "Houses" },
           { href: "/tenants", icon: <Users size={20} />, label: "Tenants" },
+          { href: "/moves", icon: <ArrowLeftRight size={20} />, label: "Move In/Out" },
           { href: "/maintenance", icon: <AlertCircle size={20} />, label: "Maintenance", badge: 2 },
         ];
       default:
