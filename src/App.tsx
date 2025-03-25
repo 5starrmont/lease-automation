@@ -11,9 +11,12 @@ import Dashboard from "./pages/Dashboard";
 import Houses from "./pages/Houses";
 import Tenants from "./pages/Tenants";
 import Payments from "./pages/Payments";
+import Maintenance from "./pages/Maintenance";
+import KplcTokens from "./pages/KplcTokens";
+import MoveEvents from "./pages/MoveEvents";
+import Receipts from "./pages/Receipts";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-// We'll add placeholders for the new routes we need based on the roadmap
 
 const queryClient = new QueryClient();
 
@@ -108,7 +111,7 @@ const AppRoutes = () => {
         path="/maintenance" 
         element={
           <RoleRoute allowedRoles={['admin', 'landlord', 'tenant', 'caretaker']}>
-            <NotFound /> {/* Placeholder until we create this page */}
+            <Maintenance />
           </RoleRoute>
         } 
       />
@@ -128,7 +131,7 @@ const AppRoutes = () => {
         path="/kplc" 
         element={
           <RoleRoute allowedRoles={['tenant']}>
-            <NotFound /> {/* Placeholder until we create this page */}
+            <KplcTokens />
           </RoleRoute>
         } 
       />
@@ -138,7 +141,7 @@ const AppRoutes = () => {
         path="/receipts" 
         element={
           <RoleRoute allowedRoles={['tenant', 'landlord']}>
-            <NotFound /> {/* Placeholder until we create this page */}
+            <Receipts />
           </RoleRoute>
         } 
       />
@@ -148,7 +151,7 @@ const AppRoutes = () => {
         path="/moves" 
         element={
           <RoleRoute allowedRoles={['caretaker', 'landlord']}>
-            <NotFound /> {/* Placeholder until we create this page */}
+            <MoveEvents />
           </RoleRoute>
         } 
       />
